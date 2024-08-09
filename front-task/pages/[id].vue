@@ -126,6 +126,13 @@ const goBack = () => {
       <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg space-y-6">
         <!-- Encabezado -->
         <header class="flex items-center justify-between">
+          <UButton
+            color="gray"
+            variant="ghost"
+            size="xl"
+            icon="i-material-symbols:arrow-back"
+            @click="router.push(`/`)"
+          />
           <h1
             class="text-3xl font-semibold text-gray-900 dark:text-gray-100 mt-4"
           >

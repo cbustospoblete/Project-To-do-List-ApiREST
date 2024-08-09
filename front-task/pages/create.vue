@@ -3,6 +3,9 @@ import { ref } from "vue";
 import type { FormSubmitEvent } from "#ui/types";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // Variable reactiva para almacenar la fecha seleccionada
 const date = ref(new Date());
@@ -130,7 +133,18 @@ const status = ["Pending", "Overdue", "Completed"];
             {{ errors.description }}
           </p>
         </UFormGroup>
-        <UButton color="white" type="submit"> Create Task </UButton>
+        <div class="flex items-center justify-between">
+          <UButton
+            color="gray"
+            variant="ghost"
+            size="xl"
+            icon="i-material-symbols:arrow-back"
+            @click="router.push(`/`)"
+          />
+          <UButton class="p-4" color="white" type="submit">
+            Create Task
+          </UButton>
+        </div>
       </UForm>
     </div>
   </div>
