@@ -29,7 +29,7 @@ const form = ref({
 });
 
 // Opciones para el campo de estado
-const statusOptions = ["Pending", "Overdue", "Completed"];
+const statusOptions = ["pending", "overdue", "completed"];
 
 // Variable reactiva para almacenar la fecha seleccionada
 const date = ref(new Date());
@@ -105,10 +105,10 @@ const deleteTask = async () => {
 onMounted(() => {
   if (!isEditing.value && data.value) {
     form.value = {
-      name: data.value?.name,
-      description: data.value?.description,
-      status: data.value?.status,
-      due_date: data.value?.due_date,
+      name: data.value?.name || "",
+      description: data.value?.description || "",
+      status: data.value?.status || "",
+      due_date: data.value?.due_date || "",
     };
     date.value = new Date(data.value?.due_date); // Inicializa la fecha seleccionada
   }
@@ -147,25 +147,16 @@ const goBack = () => {
 
         <!-- Vista de Edición -->
         <div v-if="isEditing" class="space-y-6">
-          <UFormGroup
-            label="Task Name:"
-            name="name"
-            class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-2"
-          >
+          <UFormGroup label="Task Name:" name="name">
             <UInput
               v-model="form.name"
               variant="outline"
               color="secondary"
               placeholder="Enter task name"
-              class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg"
             />
           </UFormGroup>
 
-          <UFormGroup
-            label="Description:"
-            name="description"
-            class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-2"
-          >
+          <UFormGroup label="Description:" name="description">
             <UTextarea
               color="secondary"
               variant="outline"
@@ -175,11 +166,7 @@ const goBack = () => {
             />
           </UFormGroup>
 
-          <UFormGroup
-            label="Due Date:"
-            name="due_date"
-            class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-2"
-          >
+          <UFormGroup label="Due Date:" name="due_date">
             <VueDatePicker
               v-model="date"
               :clearable="false"
@@ -189,11 +176,7 @@ const goBack = () => {
             />
           </UFormGroup>
 
-          <UFormGroup
-            label="Status:"
-            name="status"
-            class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-2"
-          >
+          <UFormGroup label="Status:" name="status">
             <USelect
               v-model="form.status"
               :options="statusOptions"

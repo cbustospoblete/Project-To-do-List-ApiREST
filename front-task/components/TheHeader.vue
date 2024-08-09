@@ -17,14 +17,12 @@ const links = [
 <template>
   <UHeader>
     <template #left>
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-200">
+      <h1 class="text-5xl font-bold text-gray-900 dark:text-gray-200">
         To-do List
       </h1>
     </template>
     <template #center>
-      <div class="flex justify-center md:justify-start">
-        <UNavigationTree :links="links" />
-      </div>
+      <UNavigationTree :links="links" />
     </template>
     <template #right>
       <UColorModeButton />
