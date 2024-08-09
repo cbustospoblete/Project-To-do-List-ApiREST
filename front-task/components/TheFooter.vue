@@ -1,16 +1,20 @@
 <script setup lang="ts">
+// Define los enlaces de navegación que se mostrarán en el encabezado. Cada enlace tiene una etiqueta, un ícono y una ruta.
 const links = [
   {
     label: "Nuxt UI",
     to: "https://ui.nuxt.com/",
+    target: "_blank",
   },
   {
     label: "Nuxt Docs",
     to: "https://nuxt.com",
+    target: "_blank",
   },
   {
-    label: "Nuxt Studio",
-    to: "https://nuxt.studio",
+    label: "Vue Date Picker",
+    to: "https://vue3datepicker.com/",
+    target: "_blank",
   },
 ];
 </script>

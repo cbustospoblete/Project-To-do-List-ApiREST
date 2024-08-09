@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { data } = await useFetch("http://localhost:8000/api/tasks");
+// Obtiene datos de la API y los almacena en `data`.
 
-// Mapea los datos a un formato simple
 const tasks = data.value.map((task: any) => ({
   id: task.id,
   name: task.name,
@@ -9,6 +9,7 @@ const tasks = data.value.map((task: any) => ({
   due_date: task.due_date,
   status: task.status,
 }));
+// Mapea los datos a un formato más simple con las propiedades necesarias.
 const columns = [
   {
     key: "id",
@@ -39,10 +40,16 @@ const columns = [
     label: "Action",
   },
 ];
+// Define las columnas de la tabla y su configuración (sortable para algunas).
+
 const page = ref(1);
+// Define la página actual en la paginación.
+
 const pageCount = 12;
+// Número de elementos por página.
 
 const paginable = computed(() => {
+  // Calcula las tareas a mostrar en la página actual.
   return tasks.slice((page.value - 1) * pageCount, page.value * pageCount);
 });
 </script>

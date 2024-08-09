@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type { NavItem } from "@nuxt/content";
-
-const navigation = inject<Ref<NavItem[]>>("navigation", ref([]));
-
+// Define los enlaces de navegación que se mostrarán en el encabezado. Cada enlace tiene una etiqueta, un ícono y una ruta.
 const links = [
   {
     label: "Home",
@@ -15,17 +12,19 @@ const links = [
     to: "/create",
   },
 ];
-function mapContentNavigation(navigation: Ref<NavItem[]>): NavItem[] {
-  return navigation.value; // Ajusta esta función según tus necesidades
-}
 </script>
 
 <template>
-  <UHeader :links="links">
+  <UHeader>
     <template #left>
       <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-200">
         To-do List
       </h1>
+    </template>
+    <template #center>
+      <div class="flex justify-center md:justify-start">
+        <UNavigationTree :links="links" />
+      </div>
     </template>
     <template #right>
       <UColorModeButton />
@@ -38,15 +37,5 @@ function mapContentNavigation(navigation: Ref<NavItem[]>): NavItem[] {
         variant="ghost"
       />
     </template>
-
-    <template #panel>
-      <UNavigationTree :links="mapContentNavigation(navigation)" />
-    </template>
   </UHeader>
 </template>
-
-<style>
-.nuxt-ui-pro-text {
-  display: none;
-}
-</style>

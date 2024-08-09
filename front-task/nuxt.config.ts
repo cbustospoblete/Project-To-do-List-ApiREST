@@ -6,5 +6,8 @@ export default defineNuxtConfig({
   modules: ['@nuxt/ui', "@nuxt/icon"],
   colorMode: {
     preference: 'dark'
-  }
+  },
+  plugins: [
+    '~/plugins/vue-datepicker.js'
+  ]
 })
