@@ -15,5 +15,9 @@
     "nuxt": "^3.12.4",
     "vue": "latest",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@iconify-json/octicon": "^1.1.57",
+    "@iconify-json/simple-icons": "^1.1.112"
   }
 }

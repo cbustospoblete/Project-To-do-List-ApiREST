@@ -6,6 +6,8 @@ import type { FormSubmitEvent } from "#ui/types";
 const task = ref({
   name: "",
   description: "",
+  status: "",
+  due_date: "",
 });
 
 const errors = ref({
@@ -49,6 +51,8 @@ async function onSubmit(event: FormSubmitEvent<typeof task.value>) {
     console.error("Error al crear la tarea:", error);
   }
 }
+
+const status = ["Pending", "Overdue", "Completed"];
 </script>
 
 <template>
@@ -59,18 +63,30 @@ async function onSubmit(event: FormSubmitEvent<typeof task.value>) {
       class="w-full max-w-xl p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg"
     >
       <UForm :state="task" class="space-y-4" @submit="onSubmit">
-        <UFormGroup label="Name of the task" name="name">
-          <UInput v-model="task.name" variant="outline" color="secondary" />
+        <UFormGroup label="Name task" name="name">
+          <UInput
+            v-model="task.name"
+            variant="outline"
+            color="gray"
+            placeholder="Name"
+          />
           <p v-if="errors.name" class="text-red-500 text-sm">
             {{ errors.name }}
           </p>
         </UFormGroup>
+        <USelect
+          v-model="task.status"
+          icon="i-heroicons-magnifying-glass-20-solid"
+          :options="status"
+          variant="outline"
+          color="gray"
+        />
 
         <UFormGroup label="Description" name="description">
           <UTextarea
-            color="secondary"
+            color="gray"
             variant="outline"
-            placeholder="maximum 500 characters"
+            placeholder="Add Task Description"
             v-model="task.description"
             rows="10"
           />
@@ -78,7 +94,6 @@ async function onSubmit(event: FormSubmitEvent<typeof task.value>) {
             {{ errors.description }}
           </p>
         </UFormGroup>
-
         <UButton
           type="submit"
           class="w-full bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"

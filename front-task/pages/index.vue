@@ -6,6 +6,8 @@ const tasks = data.value.map((task: any) => ({
   id: task.id,
   name: task.name,
   description: task.description,
+  due_date: task.due_date,
+  status: task.status,
 }));
 const columns = [
   {
@@ -20,6 +22,16 @@ const columns = [
   {
     key: "description",
     label: "Description",
+    sortable: true,
+  },
+  {
+    key: "due_date",
+    label: "Due date",
+    sortable: true,
+  },
+  {
+    key: "status",
+    label: "Status",
     sortable: true,
   },
   {

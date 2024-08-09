@@ -7,7 +7,6 @@ const route = useRoute();
 const router = useRouter();
 const taskId = route.params.id as string;
 
-// Determine if we are in editing mode based on query parameter
 const isEditing = computed(() => route.query.edit === "true");
 
 const { data, refresh } = await useFetch(
@@ -17,6 +16,8 @@ const { data, refresh } = await useFetch(
 const form = ref({
   name: "",
   description: "",
+  status: "",
+  due_date: "",
 });
 
 const editTask = () => {
@@ -64,8 +65,10 @@ const deleteTask = async () => {
 onMounted(() => {
   if (!isEditing.value && data.value) {
     form.value = {
-      name: data.value.name,
-      description: data.value.description,
+      name: data.value?.name,
+      description: data.value?.description,
+      status: data.value?.status,
+      due_date: data.value?.due_date,
     };
   }
 });
@@ -76,55 +79,75 @@ const goBack = () => {
 </script>
 
 <template>
-  <div class="pt-4 md:pt-8 mx-4 md:mx-6 lg:mx-8">
-    <div class="p-4 bg-white rounded-xl shadow-md space-y-4">
-      <header class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-gray-900 flex justify-between mt-4">
-          {{ data.name }}
-        </h1>
-        <div class="text-sm text-gray-600">Task ID: {{ taskId }}</div>
-      </header>
-      <div v-if="isEditing" class="space-y-4">
-        <UFormGroup
-          label="Task:"
-          name="name"
-          class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-md"
-        >
-          <UInput
-            v-model="form.name"
-            variant="outline"
-            color="secondary"
-            class="bg-white p-2 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-md"
-          />
-        </UFormGroup>
+  <UCard>
+    <div class="pt-2 md:pt-8 mx-4 md:mx-6 lg:mx-8">
+      <div class="p-4 bg-white rounded-xl shadow-md space-y-4">
+        <header class="flex items-center justify-between">
+          <h1
+            class="text-4xl font-bold text-gray-900 flex justify-between mt-4"
+          >
+            {{ data.name }}
+          </h1>
+          <div class="text-sm text-gray-600">Task ID: {{ taskId }}</div>
+        </header>
+        <Placeholder class="h-8" />
+        <div v-if="isEditing" class="space-y-4">
+          <UFormGroup
+            label="Task:"
+            name="name"
+            class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-md"
+          >
+            <UInput
+              v-model="form.name"
+              variant="outline"
+              color="secondary"
+              class="bg-white p-2 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-md"
+            />
+          </UFormGroup>
 
-        <UFormGroup
-          label="Description:"
-          name="description"
-          class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-md"
-        >
-          <UTextarea
-            color="secondary"
-            variant="outline"
-            placeholder="maximum 500 characters"
-            v-model="form.description"
-            rows="10"
-            class="bg-white p-2 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-md"
-          />
-        </UFormGroup>
-        <footer class="flex justify-between mt-4">
-          <UButton color="white" @click="saveTask">Save</UButton>
-          <UButton color="blue" @click="goBack">Back</UButton>
-        </footer>
-      </div>
+          <UFormGroup
+            label="Description:"
+            name="description"
+            class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-md"
+          >
+            <UTextarea
+              color="secondary"
+              variant="outline"
+              placeholder="maximum 500 characters"
+              v-model="form.description"
+              rows="10"
+              class="bg-white p-2 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-md"
+            />
+          </UFormGroup>
+          <footer class="flex justify-between mt-4">
+            <UButton color="white" @click="saveTask">Save</UButton>
+            <UButton color="blue" @click="goBack">Back</UButton>
+          </footer>
+        </div>
 
-      <div v-else class="text-gray-700">
-        <p class="text-lg">{{ data.description }}</p>
-        <footer class="flex justify-between mt-4">
-          <UButton color="white" @click="editTask">Edit Task</UButton>
-          <UButton color="red" @click="deleteTask">Delete Task</UButton>
-        </footer>
+        <div v-else class="text-gray-700">
+          <p class="text-sm">Fecha: {{ data.due_date }}</p>
+          <span class="flex items-center">
+            <span class="mr-2">Status:</span>
+            <p
+              class="text-lg"
+              :class="{
+                'text-red-500': data.status === 'overdue',
+                'text-green-500': data.status === 'completed',
+                'text-yellow-500':
+                  data.status !== 'overdue' && data.status !== 'completed',
+              }"
+            >
+              {{ data.status }}
+            </p>
+          </span>
+          <p class="text-lg">Descripción: {{ data.description }}</p>
+          <footer class="flex justify-between mt-4">
+            <UButton color="white" @click="editTask">Edit Task</UButton>
+            <UButton color="red" @click="deleteTask">Delete Task</UButton>
+          </footer>
+        </div>
       </div>
     </div>
-  </div>
+  </UCard>
 </template>
