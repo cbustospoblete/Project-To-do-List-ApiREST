@@ -15,15 +15,23 @@ const links = [
     to: "/create",
   },
 ];
+function mapContentNavigation(navigation: Ref<NavItem[]>): NavItem[] {
+  return navigation.value; // Ajusta esta función según tus necesidades
+}
 </script>
 
 <template>
   <UHeader :links="links">
+    <template #left>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-200">
+        To-do List
+      </h1>
+    </template>
     <template #right>
       <UColorModeButton />
 
       <UButton
-        to="https://github.com/nuxt/ui"
+        to="https://github.com/cbustospoblete/Project-To-do-List-ApiREST/tree/main"
         target="_blank"
         icon="i-simple-icons-github"
         color="gray"
@@ -36,3 +44,9 @@ const links = [
     </template>
   </UHeader>
 </template>
+
+<style>
+.nuxt-ui-pro-text {
+  display: none;
+}
+</style>

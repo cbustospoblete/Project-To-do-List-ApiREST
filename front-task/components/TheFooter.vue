@@ -24,7 +24,7 @@ const links = [
         icon="i-simple-icons-github"
         color="gray"
         variant="ghost"
-        to="https://github.com/nuxt/nuxt"
+        to="https://github.com/cbustospoblete/Project-To-do-List-ApiREST/tree/main"
         target="_blank"
       />
     </template>
