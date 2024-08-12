@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useFetch } from "nuxt/app";
 import VueDatePicker from "@vuepic/vue-datepicker";
@@ -34,6 +34,12 @@ const statusOptions = ["pending", "overdue", "completed"];
 // Variable reactiva para almacenar la fecha seleccionada
 const date = ref(new Date());
 
+// Estado para los mensajes de error
+const errors = ref({
+  name: "",
+  description: "",
+});
+
 // Observa los cambios en `date` y actualiza `form.due_date` con la fecha formateada
 watch(date, (newDate) => {
   form.value.due_date = formatDate(newDate);
@@ -58,6 +64,16 @@ const editTask = () => {
 
 // Función para guardar los cambios en la tarea editada
 const saveTask = async () => {
+  errors.value = {
+    name: form.value.name ? "" : "Task name is required.",
+    description: form.value.description ? "" : "Description is required.",
+  };
+
+  // Verifica si hay errores antes de proceder
+  if (errors.value.name || errors.value.description) {
+    return; // Detiene la función si hay errores
+  }
+
   try {
     // Realiza una solicitud PUT a la API para actualizar la tarea
     const response = await fetch(`http://localhost:8000/api/tasks/${taskId}`, {
@@ -154,6 +170,9 @@ const goBack = () => {
               color="secondary"
               placeholder="Enter task name"
             />
+            <p v-if="errors.name" class="text-red-500 text-sm">
+              {{ errors.name }}
+            </p>
           </UFormGroup>
 
           <UFormGroup label="Description:" name="description">
@@ -164,6 +183,9 @@ const goBack = () => {
               :rows="6"
               class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg"
             />
+            <p v-if="errors.description" class="text-red-500 text-sm">
+              {{ errors.description }}
+            </p>
           </UFormGroup>
 
           <UFormGroup label="Due Date:" name="due_date">
